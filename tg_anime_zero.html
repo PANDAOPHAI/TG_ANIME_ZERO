@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@TG_ANIME_ZERO</title>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <style>
+        body {
+            margin: 0;
+            background: url('https://static.vecteezy.com/system/resources/previews/006/852/804/non_2x/abstract-blue-background-simple-design-for-your-website-free-vector.jpg') no-repeat center center/cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .telegram-button, .quality-selector {
+            margin: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            border: none;
+        }
+        .telegram-button {
+            background-color: #0088cc;
+            color: white;
+            text-decoration: none;
+        }
+        .quality-selector {
+            background: #fff;
+            color: #000;
+            border: 1px solid #ccc;
+            transition: all 0.3s ease;
+        }
+        .quality-selector:hover {
+            background: #f0f0f0;
+        }
+        .video-container {
+            position: relative;
+            width: 80%;
+            max-width: 800px;
+        }
+        video {
+            width: 100%;
+        }
+        .watermark {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            padding: 5px 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <a href="https://t.me/+FUWWKYEsaJRhNmRl" class="telegram-button" target="_blank">Telegram: @TG_ANIME_ZERO</a>
+    <div class="video-container">
+        <video id="video" controls autoplay></video>
+        <div class="watermark">@TG_ANIME_ZERO</div>
+    </div>
+    <select id="qualitySelector" class="quality-selector"></select>
+    <script>
+        var video = document.getElementById('video');
+        var qualitySelector = document.getElementById('qualitySelector');
+        var videoSrc = "https://v18tataplaysyndication.akamaized.net/bpk-tv/Sports18_1_HD_voot_MOB/output03/index.m3u8?hdnea=exp=1741529332~acl=/*~hmac=d64e9bdc30ffa130b538009ea7437c90c3b6238e5443c739dd092279c56521f1";
+        
+        if (Hls.isSupported()) {
+            var hls = new Hls();
+            hls.loadSource(videoSrc);
+            hls.attachMedia(video);
+            hls.on(Hls.Events.MANIFEST_PARSED, function() {
+                video.play();
+                hls.levels.forEach((level, index) => {
+                    let option = new Option(level.height + 'p', index);
+                    qualitySelector.appendChild(option);
+                });
+                qualitySelector.addEventListener('change', function() {
+                    hls.currentLevel = parseInt(this.value);
+                });
+            });
+        } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+            video.src = videoSrc;
+            video.addEventListener('loadedmetadata', () => video.play());
+        }
+    </script>
+</body>
+</html>
